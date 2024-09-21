@@ -80,7 +80,21 @@ class _LoginPageState extends State<LoginPage> {
   });
 }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _checkToken();
+  }
 
+  void _checkToken() async {
+    final tokenProvider = Provider.of<UserTokenProvider>(context, listen: false);
+    await tokenProvider.loadToken(); // Carregar o token do armazenamento local
+    if (tokenProvider.token!= "") {
+      // Se o token estiver presente, navegue para a página inicial
+      Navigator.of(context).pushReplacementNamed('/home');
+    }
+  }
   @override
   Widget build(BuildContext context) {
 

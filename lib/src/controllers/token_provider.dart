@@ -1,17 +1,28 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserTokenProvider with ChangeNotifier {
   String? _token;
 
   String? get token => _token;
 
-  void setToken(String token) {
-    _token = token;
-    notifyListeners(); // Notifica os widgets dependentes quando o token for atualizado
+  Future<void> loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    _token = prefs.getString('token') ?? '';
+    notifyListeners();
   }
 
-  void clearToken() {
-    _token = null;
-    notifyListeners(); // Notifica os widgets dependentes quando o token for removido
+  Future<void> setToken(String token) async {
+    _token = token;
+    final prefis = await SharedPreferences.getInstance();
+    await prefis.setString('token', token);
+    notifyListeners();
+
+  }
+  Future<void> clearToken() async {
+    _token = '';
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    notifyListeners();
   }
 }
