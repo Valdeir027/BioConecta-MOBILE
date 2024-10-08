@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:bio_conecta/src/controllers/token_provider.dart';
+import 'package:bio_conecta/src/pages/homePage.dart';
+import 'package:bio_conecta/src/pages/navigatorPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 class LoginPage extends StatefulWidget {
@@ -17,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final TextEditingController _cpfController =  TextEditingController();
     final TextEditingController _passwordController =  TextEditingController();
-
+    bool _isLoadingPage = true;
     bool _isLoading = false;
     bool _isPasswordVisible = true;
 
@@ -45,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
           }
         } catch (e) {
           _showOverlayMessage("Erro ao fazer login");
-          print(e);
         } finally {
           setState(() {
             _isLoading = false; // Desativa o estado de carregamento
@@ -83,8 +85,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     _checkToken();
+    super.initState();
   }
 
   void _checkToken() async {
@@ -92,27 +94,38 @@ class _LoginPageState extends State<LoginPage> {
     await tokenProvider.loadToken(); // Carregar o token do armazenamento local
     if (tokenProvider.token!= "") {
       // Se o token estiver presente, navegue para a página inicial
-      Navigator.of(context).pushReplacementNamed('/home');
+      await Navigator.of(context).pushReplacementNamed('/home');
+        
+    } else {
+      setState(() {
+        _isLoadingPage = false;
+      });
     }
+    FlutterNativeSplash.remove();
   }
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body: Column(
+      body: _isLoadingPage ? const Center(child: CircularProgressIndicator(),)
+      :
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Spacer(),
+          const Spacer(),
           Center(
-            child: Container(
-              child: Image.asset('assets/images/icon.png',fit: BoxFit.cover,),
+            child: SizedBox(
+                    child: Hero( 
+                           child: Image.asset('assets/images/icon.png',fit: BoxFit.cover,),
+                              tag: 'Icon',
+                           ),
               width: 80,
               height: 80,
             ),
           ),
           Center(
             child: Container(
-            child: Image.asset('assets/images/logo.png', fit: BoxFit.cover,),
+            child:Hero(tag: "Logo",
+            child: Image.asset('assets/images/logo.png', fit: BoxFit.cover,)),
             width: 200,
             height: 30,
             ),
@@ -177,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
             child: GestureDetector(
               child: Text("Cadastre-se aqui", style: TextStyle(color: Colors.grey),), 
               onTap: () =>{
-                Navigator.of(context).pushReplacementNamed("/register")
+                Navigator.of(context).pushNamed("/register")
               },
             )
           ),

@@ -1,7 +1,8 @@
 import 'package:bio_conecta/src/pages/homePage.dart';
 import 'package:bio_conecta/src/pages/perfilPage.dart';
-import 'package:bio_conecta/src/pages/testePage.dart';
+import 'package:bio_conecta/src/pages/estantePage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class NavigatorPage extends StatefulWidget {
   @override
@@ -9,13 +10,14 @@ class NavigatorPage extends StatefulWidget {
 }
 
 class _NavigatorPageState extends State<NavigatorPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+    FlutterNativeSplash.remove();
   }
 
   @override
@@ -36,26 +38,27 @@ class _NavigatorPageState extends State<NavigatorPage> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        physics: NeverScrollableScrollPhysics(), // Para evitar o swipe manual
+        onPageChanged: (_) {
+          print("mexiaqui oh");
+          setState(() {
+            _currentIndex = _;
+          });
+        },
         children: const [
           HomePage(),
           PerfilPage(),
-          TestePage()
+          EstantePage()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        iconSize: 20,
-        enableFeedback: true,
         selectedItemColor: Color(0xFF37ab98),
-        useLegacyColorScheme: true,
         currentIndex: _currentIndex,
         onTap: onTabTapped,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
-          BottomNavigationBarItem(icon: Icon(Icons.yard), label: "teste"),
-        ],
+        items: const [
+          BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: "Perfil", icon: Icon(Icons.person)),
+          BottomNavigationBarItem(label: "Estante", icon: Icon(Icons.menu_book)),
+        ]
       ),
     );
   }
