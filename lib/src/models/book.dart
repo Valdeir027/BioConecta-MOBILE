@@ -25,13 +25,13 @@ class Book {
     descricao = json['descricao'];
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['titulo'] = this.titulo;
-  //   data['subtitulo'] = this.subtitulo;
-  //   data['autor'] = this.autor;
-  //   data['estante_id'] = this.estanteId;
-  //   data['descricao'] = this.descricao;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['titulo'] = titulo;
+    data['subtitulo'] = subtitulo;
+    data['autor'] = autor;
+    data['estante_id'] = estanteId;
+    data['descricao'] = descricao;
+    return data;
+  }
 }
