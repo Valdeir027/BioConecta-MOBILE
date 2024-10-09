@@ -1,5 +1,4 @@
 import 'package:bio_conecta/src/components/book_component.dart';
-import 'package:bio_conecta/src/models/book.dart';
 import 'package:bio_conecta/src/pages/book/addBook.dart';
 import 'package:bio_conecta/src/pages/book/viewBook.dart';
 import 'package:bio_conecta/src/repositories/book_respository.dart';

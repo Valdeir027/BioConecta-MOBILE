@@ -16,7 +16,7 @@ Future<List<DropdownMenuItem<int>>> bookDropdownMenuItens(BuildContext context) 
   List<DropdownMenuItem<int>> itens = [];
   if (response.data  != 0) {
     for (var i in response.data){
-      itens.add(DropdownMenuItem<int>(child:Text(i["nome"]), value: i["id"],));
+      itens.add(DropdownMenuItem<int>(value: i["id"],child:Text(i["nome"]),));
     }
   }
   

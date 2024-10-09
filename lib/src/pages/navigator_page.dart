@@ -1,15 +1,18 @@
-import 'package:bio_conecta/src/pages/homePage.dart';
-import 'package:bio_conecta/src/pages/perfilPage.dart';
-import 'package:bio_conecta/src/pages/estantePage.dart';
+import 'package:bio_conecta/src/constance/config.dart';
+import 'package:bio_conecta/src/pages/home_page.dart';
+import 'package:bio_conecta/src/pages/perfil_page.dart';
+import 'package:bio_conecta/src/pages/estante_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class NavigatorPage extends StatefulWidget {
+  const NavigatorPage({super.key});
+
   @override
-  _NavigatorPageState createState() => _NavigatorPageState();
+  NavigatorPageState createState() => NavigatorPageState();
 }
 
-class _NavigatorPageState extends State<NavigatorPage> {
+class NavigatorPageState extends State<NavigatorPage> {
   int _currentIndex = 2;
   late PageController _pageController;
 
@@ -38,10 +41,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        onPageChanged: (_) {
-          print("mexiaqui oh");
+        onPageChanged: (page) {
           setState(() {
-            _currentIndex = _;
+            _currentIndex = page;
           });
         },
         children: const [
@@ -51,7 +53,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0xFF37ab98),
+        selectedItemColor: LocalConfig().primaryColor,
         currentIndex: _currentIndex,
         onTap: onTabTapped,
         items: const [

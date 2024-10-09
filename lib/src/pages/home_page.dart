@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bio_conecta/src/controllers/token_provider.dart';
 import 'package:bio_conecta/src/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 

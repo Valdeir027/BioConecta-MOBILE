@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:bio_conecta/src/controllers/token_provider.dart';
-import 'package:bio_conecta/src/pages/homePage.dart';
-import 'package:bio_conecta/src/pages/navigatorPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -39,7 +39,9 @@ class _LoginPageState extends State<LoginPage> {
           final response = await http.post(Uri.parse('http://ec2-18-228-44-147.sa-east-1.compute.amazonaws.com/api/api-token-auth/'), body: body);
           final respponseBody = jsonDecode(response.body);
           if (response.statusCode == 200) {
+            // ignore: use_build_context_synchronously
             Provider.of<UserTokenProvider>(context, listen: false).setToken(respponseBody['token']);
+            // ignore: use_build_context_synchronously
             Navigator.of(context).pushReplacementNamed('/home');
           } else {
             _showOverlayMessage("Usuário ou senha inválidos");
@@ -64,11 +66,11 @@ class _LoginPageState extends State<LoginPage> {
       right: 10.0,
       child: Material(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           color: Colors.red[400],
           child: Text(
             message,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),
@@ -77,14 +79,13 @@ class _LoginPageState extends State<LoginPage> {
 
   overlay.insert(overlayEntry);
   
-  Future.delayed(Duration(seconds: 2), () {
+  Future.delayed(const Duration(seconds: 2), () {
     overlayEntry.remove();
   });
 }
 
   @override
   void initState() {
-    // TODO: implement initState
     _checkToken();
     super.initState();
   }
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
     final tokenProvider = Provider.of<UserTokenProvider>(context, listen: false);
     await tokenProvider.loadToken(); // Carregar o token do armazenamento local
     if (tokenProvider.token!= "") {
-      // Se o token estiver presente, navegue para a página inicial
+      // ignore: use_build_context_synchronously
       await Navigator.of(context).pushReplacementNamed('/home');
         
     } else {
@@ -114,20 +115,20 @@ class _LoginPageState extends State<LoginPage> {
           const Spacer(),
           Center(
             child: SizedBox(
-                    child: Hero( 
-                           child: Image.asset('assets/images/icon.png',fit: BoxFit.cover,),
-                              tag: 'Icon',
-                           ),
-              width: 80,
+                    width: 80,
               height: 80,
+                    child: Hero( 
+                           tag: 'Icon', 
+                           child: Image.asset('assets/images/icon.png',fit: BoxFit.cover,),
+                           ),
             ),
           ),
           Center(
-            child: Container(
-            child:Hero(tag: "Logo",
-            child: Image.asset('assets/images/logo.png', fit: BoxFit.cover,)),
+            child: SizedBox(
             width: 200,
             height: 30,
+            child:Hero(tag: "Logo",
+            child: Image.asset('assets/images/logo.png', fit: BoxFit.cover,)),
             ),
           ),
           Container(height: 10,),
@@ -146,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                       inputFormatters: [
                         MaskedInputFormatter('000-000-000-00')
                       ],
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "CPF",
                         border: OutlineInputBorder(),
                       ),
@@ -156,10 +157,10 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _passwordController,
                       decoration: InputDecoration(
                         labelText: "Senha",
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           iconSize: 16,
-                          icon: Icon(_isPasswordVisible? Icons.visibility : Icons.visibility_off, color: Color(0xFF37ab98)),
+                          icon: Icon(_isPasswordVisible? Icons.visibility : Icons.visibility_off, color: const Color(0xFF37ab98)),
                           onPressed: () =>{
                             setState(() {
                               _isPasswordVisible = !_isPasswordVisible;
@@ -171,14 +172,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Container(height: 10,),
                     ElevatedButton(
-                      onPressed: _isLoading?null:_login, 
-                    child: _isLoading 
-                    ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
-                    ): Text("Login", style: TextStyle(color: Colors.white)),
+                      onPressed: _isLoading?null:_login,
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFF37ab98))
-                      ),
+                        backgroundColor: WidgetStateProperty.all(const Color(0xFF37ab98))
+                      ), 
+                    child: _isLoading 
+                    ? const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+                    ): const Text("Login", style: TextStyle(color: Colors.white)),
                     )
                   ],
                 ),
@@ -188,13 +189,13 @@ class _LoginPageState extends State<LoginPage> {
           Container(height: 5,),
           Center(
             child: GestureDetector(
-              child: Text("Cadastre-se aqui", style: TextStyle(color: Colors.grey),), 
+              child: const Text("Cadastre-se aqui", style: TextStyle(color: Colors.grey),), 
               onTap: () =>{
                 Navigator.of(context).pushNamed("/register")
               },
             )
           ),
-          Spacer(),
+          const Spacer(),
           Text("@24.09.0",style: TextStyle(
               color: Colors.grey[400],
               fontSize: 10
